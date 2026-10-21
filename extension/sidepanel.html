@@ -272,19 +272,27 @@
 
   <!-- Settings / Guide Modal -->
   <div id="setup-modal">
-    <h3 style="color:#fff;">การตั้งค่าและแชร์ให้เพื่อนร่วมงาน</h3>
-    <p style="color:var(--text-dim); font-size:12px; line-height:1.5;">
-      1. ติดตั้ง Python และเปิดรัน Bridge Service:<br>
-      <code style="background:#222; color:#00e676; padding:3px 6px; display:block; margin:6px 0;">python bridge_server.py</code>
-      2. หรือหากเพื่อนไม่มี AGY CLI: ให้ใส่ Google Gemini API Key ในช่องด้านล่าง (Fallback Mode)
+    <h3 style="color:#fff;">🚀 การเชื่อมต่อกับ AGY CLI</h3>
+    <p style="color:var(--text-dim); font-size:12.5px; line-height:1.6; margin-top:8px;">
+      Extension นี้ใช้โควต้า AI จาก <b>Antigravity (AGY)</b> ฟรีบนเครื่องของคุณ
     </p>
-    <div style="margin-top:10px;">
-      <label style="display:block; margin-bottom:4px; font-size:12px;">Gemini API Key (Optional Fallback):</label>
-      <input type="password" id="cfg-api-key" style="width:100%; padding:8px; background:#1e1e24; border:1px solid #444; color:#fff; border-radius:4px;" placeholder="AIzaSy..." />
+
+    <div style="background:#181822; padding:12px; border-radius:6px; border:1px solid var(--border); margin-top:8px;">
+      <b style="color:var(--accent);">วิธีเริ่มใช้งานสำหรับเครื่องใหม่:</b>
+      <ol style="margin-left:18px; margin-top:6px; color:var(--text-dim); font-size:12px; line-height:1.6;">
+        <li>ติดตั้ง <b>Python</b> (ติ๊ก "Add Python to PATH" ตอนติดตั้ง)</li>
+        <li>ติดตั้ง <b>AGY CLI</b> (เปิด PowerShell รัน: <code>irm https://raw.githubusercontent.com/google-deepmind/antigravity/main/install.ps1 | iex</code>)</li>
+        <li>ดาวน์โหลดตัวเปิด Bridge ด้านล่างไปไว้ที่เครื่อง แล้วดับเบิลคลิกรัน:</li>
+      </ol>
+      <div style="margin-top:10px; display:flex; gap:8px;">
+        <button class="btn-tool" id="btn-download-bat" style="flex:1; background:var(--accent); color:#fff; padding:9px 12px; font-weight:bold;">
+          📥 ดาวน์โหลด start_bridge.bat
+        </button>
+      </div>
     </div>
-    <div style="margin-top:15px; display:flex; gap:10px;">
-      <button class="btn-tool" id="btn-save-cfg" style="flex:1; background:var(--accent); color:#fff; padding:8px;">บันทึก</button>
-      <button class="btn-tool" id="btn-close-cfg" style="padding:8px;">ปิด</button>
+
+    <div style="margin-top:15px; display:flex; justify-content:flex-end;">
+      <button class="btn-tool" id="btn-close-cfg" style="padding:6px 16px;">ปิด</button>
     </div>
   </div>
 

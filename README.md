@@ -1,68 +1,57 @@
 # AGY Web Copilot 🚀
 
-**AGY Web Copilot** is an AI-powered Chrome Side Panel Extension that connects your browser with **Antigravity (AGY)**. It allows you to chat naturally with AI to inspect, read, analyze, and automate form filling or workflows directly inside any web page.
+**AGY Web Copilot** คือ Chrome Side Panel Extension ที่เชื่อมต่อกับ **Antigravity (AGY)** เพื่อช่วยคุณคุยสั่งงานด้วยภาษาธรรมชาติ ให้ AI อ่าน, สรุป, ตรวจสอบ, และกรอกฟอร์มในหน้าเว็บ (เช่น ระบบ PMS, D-Doc, SIMS) ได้แบบอัตโนมัติ โดยใช้โควต้า AGY บนเครื่องคุณได้โดยตรง
 
 ---
 
-## Key Features
+## จุดเด่นสำคัญ
 
-- 📑 **Target Tab Selection:** Choose any specific tab in your browser to inspect or automate while you continue working in other tabs.
-- 👁️ **Visual Inspection (Ctrl+V):** Paste screenshots directly into the chat to let AGY visually compare the page with your desired design or check for missing inputs.
-- 📋 **Semantic Table & Form Automation:** Intelligently maps table rows, KPI criteria, and form inputs without running unsafe JavaScript evals.
-- 🛡️ **100% Content Security Policy (CSP) Safe:** Directly manipulates DOM inputs natively—fully compatible with strict enterprise intranets (e.g., PEA PMS, D-Doc, SIMS).
-- ⚡ **Dual-Mode Architecture:**
-  - **AGY CLI Mode (Default):** Uses your local AGY quota on your computer for free.
-  - **Direct Gemini API Mode (Fallback):** Can run standalone without Python/CLI using a Google Gemini API Key.
+- 🎯 **เลือกแท็บเป้าหมายได้ (Target Tab Selection):** เจาะจงให้ AI ดูเฉพาะแท็บที่ต้องการ แม้คุณจะสลับแท็บไปทำงานอื่น AI ก็ยังคุมแท็บเดิมถูกต้อง
+- 👁️ **กด Ctrl+V แปะรูปภาพได้เลย:** แคปภาพหน้าจอตัวอย่างที่ต้องการ แล้ววางลงในแชทเพื่อให้ AI เทียบกับหน้าเว็บจริง
+- 📋 **รองรับตารางและฟอร์มขนาดใหญ่:** แยกโครงสร้างแถวและคอลัมน์ แม่นยำเรื่องการจับคู่เกณฑ์คะแนนและช่องกรอกผลงาน
+- 🛡️ **100% Content Security Policy (CSP) Safe:** ควบคุม DOM ผ่านมาตรฐาน Chrome Content Script โดยไม่ใช้ `eval` หรือ `<script>` แทรกในหน้าเว็บ จึงปลอดภัยและเข้ากับเว็บองค์กรได้ทุกระบบ
+- 🤝 **Human-in-the-Loop:** มีปุ่มกดยืนยัน Action ก่อนบันทึกลงในเว็บจริงเสมอ ปลอดภัย ไม่กรอกมั่ว
 
 ---
 
-## 🚀 Quick Start Guide (For Users)
+## 🚀 วิธีติดตั้งและเริ่มใช้งาน (สำหรับผู้ใช้ใหม่)
 
-### Step 1: Install Antigravity (AGY) CLI
-If you don't have AGY CLI installed yet:
-1. Open PowerShell and follow the [Antigravity Installation Guide](https://github.com/google-deepmind/antigravity).
-2. Run `agy install` and log in to authenticate your account.
-3. Test that it works by typing `agy --version` in terminal.
-
----
-
-### Step 2: Run the Local Bridge Service
-The bridge connects your Chrome Extension to your local AGY CLI quota:
-
-1. Clone or download this repository.
-2. In the `bridge` folder, install requirements (only needed once):
-   ```bash
-   pip install fastapi uvicorn pydantic
+### 1. ติดตั้ง Antigravity (AGY) CLI
+หากยังไม่เคยติดตั้ง AGY ในเครื่อง:
+1. เปิด **PowerShell** แล้วรันคำสั่ง:
+   ```powershell
+   irm https://raw.githubusercontent.com/google-deepmind/antigravity/main/install.ps1 | iex
    ```
-3. Run the bridge:
-   - **On Windows:** Double-click `bridge/start_bridge.bat`
-   - **Via Terminal:** `python bridge/bridge_server.py`
-4. The bridge will start at `http://127.0.0.1:8765` and display `AGY Path: ...`.
+2. ทำการยืนยันสิทธิ์ล็อกอินบัญชีของคุณให้เรียบร้อย
+3. ทดสอบว่าพร้อมใช้งานด้วยคำสั่ง `agy --version`
 
 ---
 
-### Step 3: Install the Chrome Extension
-1. Open Google Chrome and navigate to `chrome://extensions/`.
-2. Toggle on **"Developer mode"** in the top right corner.
-3. Click **"Load unpacked"** and select the `extension` folder from this repo.
-4. Click the Side Panel icon in Chrome's top bar and select **AGY Web Copilot**.
-5. You should see a green dot: **`AGY Online (New Session)`**. You are ready to go!
+### 2. รัน Bridge Service บนเครื่อง
+Extension จะคุยกับ AGY CLI ผ่าน Local Bridge ตัวเล็กๆ:
+
+1. ดาวน์โหลดไฟล์ [`start_bridge.bat`](https://raw.githubusercontent.com/akekapong78/agy-web-copilot/main/bridge/start_bridge.bat)
+2. วางไว้ในโฟลเดอร์ใดก็ได้บนเครื่อง แล้วดับเบิลคลิกรัน
+   - *ตัว .bat จะดาวน์โหลด backend และติดตั้งไลบรารีที่จำเป็นให้โดยอัตโนมัติในการรันครั้งแรก*
+3. หน้าต่างสีดำจะแสดงสถานะ:
+   `🚀 AGY Web Copilot Bridge กำลังทำงานที่ http://127.0.0.1:8765`
 
 ---
 
-## 🌟 Standalone Mode (No Python / No AGY CLI Needed)
-If a user or colleague wants to use the extension without installing Python or AGY CLI:
-1. Install the extension in Chrome.
-2. In the Side Panel, click the **⚙️ Settings** icon.
-3. Enter a free **Google Gemini API Key** (obtainable from [Google AI Studio](https://aistudio.google.com/app/apikey)).
-4. The extension will automatically switch to **Direct API Mode** and execute page actions without any background service!
+### 3. ติดตั้ง Chrome Extension
+1. ดาวน์โหลดโฟลเดอร์ `extension` จาก repository นี้ (หรือดาวน์โหลดจาก Chrome Web Store)
+2. เปิด Google Chrome แล้วไปที่: `chrome://extensions/`
+3. เปิด **"โหมดนักพัฒนาซอฟต์แวร์" (Developer mode)** ที่มุมขวาบน
+4. คลิกปุ่ม **"โหลดส่วนขยายที่คลายการบีบอัดแล้ว" (Load unpacked)** แล้วเลือกโฟลเดอร์ `extension`
+5. เปิด Side Panel ใน Chrome แล้วเลือก **AGY Web Copilot**
+6. คุณจะเห็นสถานะจุดสีเขียว **`AGY Online (New Session)`** และพร้อมสั่งงานได้ทันที!
 
 ---
 
-## 🔒 Security & Privacy Notice
-- No user credentials, passwords, or session tokens are stored in the code.
-- All automation actions require human confirmation via the **"🚀 กดดำเนินการลงในเว็บทันที"** button before executing.
-- Screenshots pasted via `Ctrl+V` are kept strictly on your local machine (`Downloads` folder) and analyzed locally.
+## 🔒 ความเป็นส่วนตัวและความปลอดภัย
+- ไม่มีการเก็บรหัสผ่านหรือข้อมูลส่วนตัวของผู้ใช้
+- ข้อมูลที่คุยและแคปหน้าจอจะถูกประมวลผลบนเครื่องและส่งไปยังโควต้า AGY ของผู้ใช้คนนั้นๆ เอง
+- เป็น Open Source 100%
 
 ---
 

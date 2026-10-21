@@ -13,16 +13,28 @@ const btnClear = document.getElementById("btn-clear");
 const btnSettings = document.getElementById("btn-settings");
 const setupModal = document.getElementById("setup-modal");
 const btnCloseCfg = document.getElementById("btn-close-cfg");
-const btnSaveCfg = document.getElementById("btn-save-cfg");
-const cfgApiKey = document.getElementById("cfg-api-key");
+const btnDownloadBat = document.getElementById("btn-download-bat");
 const imgPreviewBar = document.getElementById("img-preview-bar");
 const imgPreviewThumb = document.getElementById("img-preview-thumb");
 const btnRemoveImg = document.getElementById("btn-remove-img");
 
 let isBridgeOnline = false;
 let currentSessionId = null;
-let customApiKey = "";
 let attachedImageBase64 = null; // Stored base64 image from Ctrl+V
+
+btnSettings.addEventListener("click", () => setupModal.style.display = "flex");
+btnCloseCfg.addEventListener("click", () => setupModal.style.display = "none");
+
+// One-click download start_bridge.bat from GitHub Raw
+btnDownloadBat.addEventListener("click", () => {
+  const batUrl = "https://raw.githubusercontent.com/akekapong78/agy-web-copilot/main/bridge/start_bridge.bat";
+  const a = document.createElement("a");
+  a.href = batUrl;
+  a.download = "start_bridge.bat";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+});
 
 // Handle Clipboard Paste (Ctrl+V) for Images
 document.addEventListener("paste", (event) => {
@@ -47,24 +59,6 @@ btnRemoveImg.addEventListener("click", () => {
   attachedImageBase64 = null;
   imgPreviewBar.style.display = "none";
   imgPreviewThumb.src = "";
-});
-
-// Load stored settings
-chrome.storage.local.get(["geminiApiKey"], (res) => {
-  if (res.geminiApiKey) {
-    customApiKey = res.geminiApiKey;
-    cfgApiKey.value = customApiKey;
-  }
-});
-
-btnSettings.addEventListener("click", () => setupModal.style.display = "flex");
-btnCloseCfg.addEventListener("click", () => setupModal.style.display = "none");
-btnSaveCfg.addEventListener("click", () => {
-  customApiKey = cfgApiKey.value.trim();
-  chrome.storage.local.set({ geminiApiKey: customApiKey }, () => {
-    alert("บันทึกการตั้งค่าเรียบร้อยแล้ว");
-    setupModal.style.display = "none";
-  });
 });
 
 // Reset Session Button
@@ -100,7 +94,7 @@ async function checkBridge() {
   }
   isBridgeOnline = false;
   statusDot.className = "status-dot";
-  statusText.innerText = customApiKey ? "Direct API Mode" : "Bridge Offline (คลิก ⚙️)";
+  statusText.innerText = "Bridge Offline (คลิก ⚙️ เชื่อมต่อ)";
   return false;
 }
 setInterval(checkBridge, 5000);
@@ -244,14 +238,11 @@ async function handleUserPrompt(userText) {
         currentSessionId = replyData.sessionId;
         statusText.innerText = `AGY Session (${currentSessionId.substring(0, 8)})`;
       }
-    } else if (customApiKey) {
-      botPlaceholder.innerHTML = "⏳ ส่งคำสั่งตรงไปยัง Gemini API...";
-      replyData = await callDirectGemini(payload);
     } else {
       botPlaceholder.innerHTML = `
-        ❌ <b>ยังไม่ได้เชื่อมต่อ Bridge และไม่มี API Key</b><br>
-        กรุณาเปิดรัน <code>start_bridge.bat</code> บนเครื่อง<br>
-        หรือคลิกปุ่ม ⚙️ เพื่อใส่ Google Gemini API Key
+        ❌ <b>ยังไม่ได้เชื่อมต่อ AGY Bridge บนเครื่อง</b><br><br>
+        1. คลิกปุ่มฟันเฟือง <b>⚙️</b> ด้านบนเพื่อดาวน์โหลด <code>start_bridge.bat</code><br>
+        2. ดับเบิลคลิกรัน <code>start_bridge.bat</code> เพื่อเริ่มเชื่อมต่อกับ AGY CLI แล้วลองใหม่อีกครั้งครับ
       `;
       return;
     }
@@ -302,55 +293,6 @@ function renderBotResponse(container, data, tabId) {
   } else {
     container.innerHTML = html;
   }
-}
-
-// Fallback direct Gemini API caller
-async function callDirectGemini(payload) {
-  const parts = [];
-
-  if (payload.image && payload.image.includes("base64,")) {
-    const [mimePart, b64Data] = payload.image.split(";base64,");
-    const mimeType = mimePart.replace("data:", "") || "image/png";
-    parts.push({
-      inline_data: {
-        mime_type: mimeType,
-        data: b64Data
-      }
-    });
-  }
-
-  const prompt = `
-You are an expert web copilot AI assistant.
-The user is viewing a web page:
-Title: ${payload.context.title}
-URL: ${payload.context.url}
-Form Fields: ${JSON.stringify(payload.context.formFields ? payload.context.formFields.slice(0, 30) : [])}
-
-User instruction: "${payload.prompt}"
-
-Respond in valid JSON format ONLY:
-{
-  "reply": "Explain your answer or comparison with the image in natural Thai",
-  "actions": [
-    { "type": "fill" | "click" | "select", "selector": "#id or [name=...] or css selector", "value": "value to fill if fill" }
-  ]
-}
-Return ONLY valid JSON.
-`;
-  parts.push({ text: prompt });
-
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${payload.apiKey}`;
-  const resp = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      contents: [{ parts: parts }],
-      generationConfig: { responseMimeType: "application/json" }
-    })
-  });
-  const json = await resp.json();
-  const rawText = json.candidates[0].content.parts[0].text;
-  return JSON.parse(rawText);
 }
 
 // Event Listeners
