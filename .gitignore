@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.env.*
+node_modules/
+.vscode/
+.idea/
+pms_full_actions.json
+copilot_paste_*.png
+copilot_paste_*.jpg
+*.log
