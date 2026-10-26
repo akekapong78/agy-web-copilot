@@ -258,8 +258,16 @@ Schema:
 
 if __name__ == "__main__":
     import uvicorn
+    # Ensure stdout/stderr handles UTF-8 on Windows command prompts
+    if sys.platform == "win32":
+        try:
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+            sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
+
     print("=" * 60)
-    print("🚀 AGY Web Copilot Bridge v5 (Stable Stream & Full JSON Safe)")
-    print(f"📦 AGY Path: {AGY_PATH}")
+    print("AGY Web Copilot Bridge v5 (Stable Stream & Full JSON Safe)")
+    print(f"AGY Path: {AGY_PATH}")
     print("=" * 60)
     uvicorn.run(app, host="127.0.0.1", port=8765)

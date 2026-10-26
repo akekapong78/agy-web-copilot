@@ -46,11 +46,15 @@ if %ERRORLEVEL% neq 0 (
 )
 
 :: 5. เริ่มรัน Service
+set PYTHONIOENCODING=utf-8
+set PYTHONUTF8=1
 cls
 echo ======================================================================
-echo    🚀 AGY Web Copilot Bridge กำลังทำงานที่ http://127.0.0.1:8765
+echo    AGY Web Copilot Bridge กำลังทำงานที่ http://127.0.0.1:8765
 echo    (เปิดหน้าต่างนี้ทิ้งไว้ขณะใช้งาน Chrome Extension)
 echo ======================================================================
 echo.
 python bridge_server.py
+echo.
+echo [Bridge หยุดทำงาน หรือมีข้อผิดพลาดด้านบน]
 pause
