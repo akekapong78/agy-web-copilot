@@ -1,46 +1,47 @@
 @echo off
-title AGY Web Copilot - Auto Setup and Bridge
+title AGY Web Copilot Bridge (Standalone - No Python Needed)
 echo ======================================================================
 echo    AGY Web Copilot Bridge (Standalone Setup)
 echo ======================================================================
 echo.
 
-where python >nul 2>nul
-if %ERRORLEVEL% neq 0 (
-    echo [ERROR] Python not found in PATH!
-    echo Please install Python 3.10+ from python.org or Microsoft Store.
-    echo.
-    pause
-    exit /b
-)
-
-where agy >nul 2>nul
-if %ERRORLEVEL% neq 0 (
-    echo [WARNING] agy CLI not found in PATH!
-    echo.
-)
-
 cd /d "%~dp0"
-if not exist "bridge_server.py" (
-    echo [INFO] Downloading bridge_server.py from GitHub...
-    powershell -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/akekapong78/agy-web-copilot/main/bridge/bridge_server.py' -OutFile 'bridge_server.py'"
+
+:: 1. หากมี agy-bridge.exe อยู่แล้ว ให้รันทันที
+if exist "agy-bridge.exe" (
+    goto RUN
+)
+if exist "dist\agy-bridge\agy-bridge.exe" (
+    cd dist\agy-bridge
+    goto RUN
 )
 
-echo [INFO] Checking dependencies (FastAPI, Uvicorn)...
-python -c "import fastapi, uvicorn" >nul 2>nul
-if %ERRORLEVEL% neq 0 (
-    echo [INFO] Installing fastapi, uvicorn, pydantic...
-    pip install fastapi uvicorn pydantic -q
-)
-
-set PYTHONIOENCODING=utf-8
-set PYTHONUTF8=1
-cls
-echo ======================================================================
-echo    AGY Web Copilot Bridge running at http://127.0.0.1:8765
-echo    (Keep this window open while using Chrome Extension)
-echo ======================================================================
+:: 2. หากยังไม่มี agy-bridge.exe ให้ดาวน์โหลดตัวพร้อมใช้งานจาก GitHub Release
+echo [INFO] ไม่พบไฟล์ executable ในเครื่อง กำลังดาวน์โหลดตัว Standalone จาก GitHub...
+echo (ไม่ต้องติดตั้ง Python หรือไลบรารีใดๆ)
 echo.
-python bridge_server.py
+
+powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://github.com/akekapong78/agy-web-copilot/releases/download/v1.0.0/agy-bridge-windows.zip' -OutFile 'agy-bridge-windows.zip'"
+
+if exist "agy-bridge-windows.zip" (
+    echo [INFO] กำลังคลายไฟล์...
+    powershell -Command "Expand-Archive -Path 'agy-bridge-windows.zip' -DestinationPath '.' -Force"
+    del agy-bridge-windows.zip
+)
+
+:RUN
+if exist "agy-bridge.exe" (
+    cls
+    echo ======================================================================
+    echo    AGY Web Copilot Bridge running at http://127.0.0.1:8765
+    echo    (Keep this window open while using Chrome Extension)
+    echo ======================================================================
+    echo.
+    agy-bridge.exe
+) else (
+    echo [ERROR] ไม่สามารถเริ่มรัน agy-bridge.exe ได้
+    echo สามารถดาวน์โหลดตรงได้ที่: https://github.com/akekapong78/agy-web-copilot/releases
+)
+
 echo.
 pause
