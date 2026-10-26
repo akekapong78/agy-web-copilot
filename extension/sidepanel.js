@@ -219,8 +219,7 @@ async function handleUserPrompt(userText) {
     prompt: userText || "ช่วยตรวจสอบหน้าเว็บเปรียบเทียบกับรูปภาพที่แนบมานี้",
     context: pageInfo.context,
     image: currentImg,
-    sessionId: currentSessionId,
-    apiKey: customApiKey || null
+    sessionId: currentSessionId
   };
 
   try {
