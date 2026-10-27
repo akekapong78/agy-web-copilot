@@ -39,6 +39,11 @@ Extension จะคุยกับ AGY CLI ผ่าน Local Bridge:
 2. ดับเบิลคลิกที่ไฟล์ **`start_bridge.command`** ใน Finder เพื่อรันได้ทันที (ระบบจะเตรียม Virtual Environment และ dependencies ให้โดยอัตโนมัติ)
    *(หรือเปิด Terminal แล้วรัน `./start_bridge.sh`)*
 
+> [!TIP]
+> **หาก macOS แจ้งเตือน *"Apple could not verify..."* หรือบล็อกความปลอดภัย:**
+> - กด **Done** แล้วไปที่ **System Settings** -> **Privacy & Security** -> เลื่อนลงมาที่หัวข้อ Security แล้วกดปุ่ม **"Open Anyway" (เปิดต่อไป)**
+> - หรือเปิด Terminal แล้วรันคำสั่งปลดล็อก: `xattr -c start_bridge.command` (ทำเพียงครั้งแรกครั้งเดียว)
+
 #### สำหรับ Linux:
 1. ดาวน์โหลดไฟล์ [`start_bridge.sh`](https://raw.githubusercontent.com/akekapong78/agy-web-copilot/main/bridge/start_bridge.sh)
 2. เปิด Terminal ในโฟลเดอร์แล้วให้สิทธิ์รัน:
