@@ -34,7 +34,12 @@ Extension จะคุยกับ AGY CLI ผ่าน Local Bridge:
 1. ดาวน์โหลดไฟล์ [`start_bridge.bat`](https://raw.githubusercontent.com/akekapong78/agy-web-copilot/main/bridge/start_bridge.bat)
 2. ดับเบิลคลิกรันได้ทันที (ตัว .bat จะดึง standalone executable ให้อัตโนมัติ ไม่ต้องลง Python)
 
-#### สำหรับ macOS / Linux:
+#### สำหรับ macOS:
+1. ดาวน์โหลดไฟล์ [`start_bridge.command`](https://raw.githubusercontent.com/akekapong78/agy-web-copilot/main/bridge/start_bridge.command) (หรือหาก clone repo มาแล้วจะมีไฟล์ `start_bridge.command` อยู่ที่ root และใน `bridge/`)
+2. ดับเบิลคลิกที่ไฟล์ **`start_bridge.command`** ใน Finder เพื่อรันได้ทันที (ระบบจะเตรียม Virtual Environment และ dependencies ให้โดยอัตโนมัติ)
+   *(หรือเปิด Terminal แล้วรัน `./start_bridge.sh`)*
+
+#### สำหรับ Linux:
 1. ดาวน์โหลดไฟล์ [`start_bridge.sh`](https://raw.githubusercontent.com/akekapong78/agy-web-copilot/main/bridge/start_bridge.sh)
 2. เปิด Terminal ในโฟลเดอร์แล้วให้สิทธิ์รัน:
    ```bash

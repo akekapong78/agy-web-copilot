@@ -25,6 +25,7 @@ const btnSettings = document.getElementById("btn-settings");
 const setupModal = document.getElementById("setup-modal");
 const btnCloseCfg = document.getElementById("btn-close-cfg");
 const btnDownloadBat = document.getElementById("btn-download-bat");
+const btnDownloadCommand = document.getElementById("btn-download-command");
 const btnDownloadSh = document.getElementById("btn-download-sh");
 const imgPreviewBar = document.getElementById("img-preview-bar");
 const imgPreviewThumb = document.getElementById("img-preview-thumb");
@@ -79,11 +80,12 @@ const i18n = {
     modalStepTitle: "Quick Start Guide:",
     modalStepsHtml: `
       <li>Install <b>AGY CLI</b> (Windows: <code>irm ... | iex</code> / macOS: <code>curl -fsSL ... | bash</code>)</li>
-      <li>Download launcher script below: <b>start_bridge.bat</b> (Windows) or <b>start_bridge.sh</b> (macOS / Linux)</li>
+      <li>Download launcher script below: <b>start_bridge.bat</b> (Windows), <b>start_bridge.command</b> (macOS), or <b>start_bridge.sh</b> (Linux)</li>
       <li>Run the script to connect AGY CLI (keep terminal open while using extension)</li>
     `,
     btnDownloadBat: "🪟 Windows (.bat)",
-    btnDownloadSh: "🍎 macOS / Linux (.sh)",
+    btnDownloadCommand: "🍎 macOS (.command)",
+    btnDownloadSh: "🐧 Linux (.sh)",
     btnCloseCfg: "Close",
     resetSuccessMsg: "🧹 Chat history cleared and new session started.",
     sessionSwitchedMsg: (id) => `🔄 Switched to AGY session: <code>${id.substring(0, 8)}</code>`,
@@ -139,11 +141,12 @@ const i18n = {
     modalStepTitle: "วิธีเริ่มใช้งาน:",
     modalStepsHtml: `
       <li>ติดตั้ง <b>AGY CLI</b> (Windows: PowerShell / macOS: Terminal)</li>
-      <li>ดาวน์โหลดไฟล์รัน Bridge ด้านล่าง: <b>start_bridge.bat</b> (Windows) หรือ <b>start_bridge.sh</b> (macOS / Linux)</li>
+      <li>ดาวน์โหลดไฟล์รัน Bridge ด้านล่าง: <b>start_bridge.bat</b> (Windows), <b>start_bridge.command</b> (macOS ดับเบิลคลิกได้ทันที), หรือ <b>start_bridge.sh</b> (Linux)</li>
       <li>รันไฟล์เพื่อเริ่มเชื่อมต่อกับ AGY CLI (เปิดหน้าต่าง Terminal ทิ้งไว้ขณะใช้งาน)</li>
     `,
     btnDownloadBat: "🪟 Windows (.bat)",
-    btnDownloadSh: "🍎 macOS / Linux (.sh)",
+    btnDownloadCommand: "🍎 macOS (.command)",
+    btnDownloadSh: "🐧 Linux (.sh)",
     btnCloseCfg: "ปิด",
     resetSuccessMsg: "🧹 ล้างประวัติและเริ่ม Session ใหม่เรียบร้อยแล้วครับ",
     sessionSwitchedMsg: (id) => `🔄 สลับไปสนทนาต่อใน Session: <code>${id.substring(0, 8)}</code>`,
@@ -200,6 +203,7 @@ function applyLanguage(lang) {
   modalStepTitle.innerText = t.modalStepTitle;
   modalSteps.innerHTML = t.modalStepsHtml;
   btnDownloadBat.innerText = t.btnDownloadBat;
+  if (btnDownloadCommand) btnDownloadCommand.innerText = t.btnDownloadCommand;
   if (btnDownloadSh) btnDownloadSh.innerText = t.btnDownloadSh;
   btnCloseCfg.innerText = t.btnCloseCfg;
 
@@ -234,6 +238,19 @@ btnDownloadBat.addEventListener("click", () => {
   a.click();
   a.remove();
 });
+
+// One-click download start_bridge.command for macOS
+if (btnDownloadCommand) {
+  btnDownloadCommand.addEventListener("click", () => {
+    const cmdUrl = "https://raw.githubusercontent.com/akekapong78/agy-web-copilot/main/bridge/start_bridge.command";
+    const a = document.createElement("a");
+    a.href = cmdUrl;
+    a.download = "start_bridge.command";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  });
+}
 
 // One-click download start_bridge.sh for macOS / Linux
 if (btnDownloadSh) {
