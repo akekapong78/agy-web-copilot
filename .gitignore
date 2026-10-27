@@ -11,3 +11,7 @@ pms_full_actions.json
 copilot_paste_*.png
 copilot_paste_*.jpg
 *.log
+build/
+dist/
+*.zip
+*.spec

@@ -27,14 +27,24 @@
 
 ---
 
-### 2. รัน Bridge Service บนเครื่อง (ไม่ต้องติดตั้ง Python)
-Extension จะคุยกับ AGY CLI ผ่าน Local Bridge ตัวเล็กๆ:
+### 2. รัน Bridge Service บนเครื่อง
+Extension จะคุยกับ AGY CLI ผ่าน Local Bridge:
 
-1. ดาวน์โหลดไฟล์ [`start_bridge.bat`](https://raw.githubusercontent.com/akekapong78/agy-web-copilot/main/bridge/start_bridge.bat) (หรือกดปุ่มดาวน์โหลดจากใน Extension)
-2. วางไว้ในโฟลเดอร์ใดก็ได้บนเครื่อง แล้วดับเบิลคลิกรัน
-   - *ตัว .bat จะดาวน์โหลด Bridge Executable จาก GitHub Release ให้อัตโนมัติในครั้งแรก ไม่ต้องติดตั้ง Python, Pip หรือไลบรารีใดๆ เลย*
-3. หน้าต่างสีดำจะแสดงสถานะ:
-   `AGY Web Copilot Bridge running at http://127.0.0.1:8765`
+#### สำหรับ Windows:
+1. ดาวน์โหลดไฟล์ [`start_bridge.bat`](https://raw.githubusercontent.com/akekapong78/agy-web-copilot/main/bridge/start_bridge.bat)
+2. ดับเบิลคลิกรันได้ทันที (ตัว .bat จะดึง standalone executable ให้อัตโนมัติ ไม่ต้องลง Python)
+
+#### สำหรับ macOS / Linux:
+1. ดาวน์โหลดไฟล์ [`start_bridge.sh`](https://raw.githubusercontent.com/akekapong78/agy-web-copilot/main/bridge/start_bridge.sh)
+2. เปิด Terminal ในโฟลเดอร์แล้วให้สิทธิ์รัน:
+   ```bash
+   chmod +x start_bridge.sh
+   ./start_bridge.sh
+   ```
+   *(สคริปต์จะตรวจสอบและติดตั้ง FastAPI/Uvicorn อัตโนมัติในครั้งแรก)*
+
+หน้าต่าง Terminal / Command Prompt จะแสดงสถานะ:
+`AGY Web Copilot Bridge running at http://127.0.0.1:8765`
 
 ---
 

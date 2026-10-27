@@ -29,7 +29,7 @@ function extractPageContext() {
         if (txt) cellTexts.push(txt);
 
         // Collect inputs inside cell
-        td.querySelectorAll("input, textarea, select, button").forEach(el => {
+        td.querySelectorAll("input, textarea, select, button, a").forEach(el => {
           if (!el.getAttribute("data-agy-id")) {
             el.setAttribute("data-agy-id", `agy-${agyIdCounter++}`);
           }
@@ -38,7 +38,7 @@ function extractPageContext() {
             agyId: aid,
             tag: el.tagName.toLowerCase(),
             type: el.type || el.tagName.toLowerCase(),
-            value: el.value || "",
+            value: el.value || el.innerText.trim() || "",
             placeholder: el.placeholder || "",
             cellTextNear: txt.slice(0, 100)
           };
@@ -50,6 +50,7 @@ function extractPageContext() {
       if (cellTexts.length > 0 || rowInputs.length > 0) {
         rows.push({
           row: rIdx + 1,
+          cells: cellTexts, // exact structured array of cells in order
           textSummary: cellTexts.join(" | "),
           inputs: rowInputs
         });
